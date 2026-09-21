@@ -1,5 +1,6 @@
 import pytest
 from fastapi import HTTPException
+from pydantic import ValidationError
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -142,4 +143,41 @@ def test_ticket_router_logic(db_session):
     with pytest.raises(HTTPException) as exc_info:
         tickets.get_ticket(created.id, db=db_session)
 
+    assert exc_info.value.status_code == 404
+
+
+def test_invalid_ticket_data_raises_validation_error():
+    with pytest.raises(ValidationError):
+        schemas.TicketCreate(
+            title="",
+            description="Некорректное описание",
+            employee_id=1,
+        )
+
+    with pytest.raises(ValidationError):
+        schemas.TicketCreate(
+            title="Корректный заголовок",
+            description="",
+            employee_id=1,
+        )
+
+    with pytest.raises(ValidationError):
+        schemas.TicketUpdate(title="")
+
+
+def test_missing_ticket_raises_404(db_session):
+    with pytest.raises(HTTPException) as exc_info:
+        tickets.get_ticket(999999, db=db_session)
+    assert exc_info.value.status_code == 404
+
+    with pytest.raises(HTTPException) as exc_info:
+        tickets.update_ticket(
+            999999,
+            schemas.TicketUpdate(status=models.TicketStatus.resolved),
+            db=db_session,
+        )
+    assert exc_info.value.status_code == 404
+
+    with pytest.raises(HTTPException) as exc_info:
+        tickets.delete_ticket(999999, db=db_session)
     assert exc_info.value.status_code == 404
