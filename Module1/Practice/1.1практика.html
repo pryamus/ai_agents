@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>1.1практика.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h2 id="кейс-1-генерация-crud-для-системы-заявок">Кейс 1. Генерация CRUD для системы заявок</h2>
+<p>Команда разрабатывает внутреннюю систему технической поддержки. Сотрудники компании смогут создавать заявки, связанные с неисправностями оборудования и программного обеспечения. На текущем этапе проекта уже существует серверное приложение и подключена база данных, однако модуль работы с заявками ещё не реализован.</p>
+<p>В базе данных должна храниться сущность <code>Ticket</code>. Для каждой заявки необходимо хранить идентификатор, заголовок, описание проблемы, статус, дату создания и идентификатор сотрудника, создавшего заявку.</p>
+<p>Статус заявки может принимать значения <code>new</code>, <code>in_progress</code>, <code>resolved</code> и <code>closed</code>.</p>
+<p>Для сущности требуется реализовать стандартные CRUD-операции. Система должна позволять создать новую заявку, получить список заявок, получить одну заявку по идентификатору, изменить существующую заявку и удалить её.</p>
+<p>Проект использует Python, FastAPI, SQLAlchemy и PostgreSQL.</p>
+<p>Существующая модель данных представлена в упрощённом виде:</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">class</span> <span class="hljs-title class_">Ticket</span>:
+    <span class="hljs-built_in">id</span>: <span class="hljs-built_in">int</span>
+    title: <span class="hljs-built_in">str</span>
+    description: <span class="hljs-built_in">str</span>
+    status: <span class="hljs-built_in">str</span>
+    created_at: datetime
+    user_id: <span class="hljs-built_in">int</span>
+</div></code></pre>
+<p>При создании заявки клиент передаёт заголовок, описание проблемы и идентификатор пользователя. Новая заявка должна автоматически получать статус <code>new</code>.</p>
+<p>При получении списка заявок необходимо предусмотреть возможность фильтрации по статусу.</p>
+<p>При запросе заявки по несуществующему идентификатору API должен возвращать сообщение о том, что объект не найден.</p>
+<p>При изменении заявки пользователь может изменить заголовок, описание и статус. Поля <code>id</code>, <code>created_at</code> и <code>user_id</code> изменять через данный запрос нельзя.</p>
+<p>Команда рассматривает использование ИИ для подготовки первоначальной реализации нового CRUD-модуля.</p>
+<p>Рабочая задача заключается в создании модуля работы с заявками, соответствующего существующему технологическому стеку и указанным требованиям.</p>
+<h2 id="кейс-2-миграция-части-проекта-на-новый-стек">Кейс 2. Миграция части проекта на новый стек</h2>
+<p>Компания поддерживает внутренний сервис управления товарами. Проект существует несколько лет и был создан на Flask.</p>
+<p>Команда постепенно переводит серверную часть приложения на FastAPI. Полностью переписывать проект за один этап нельзя, поэтому миграция выполняется по отдельным модулям.</p>
+<p>Необходимо перенести модуль получения информации о товарах.</p>
+<p>Старый Flask-маршрут выглядит следующим образом:</p>
+<pre class="hljs"><code><div><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">&quot;/products/&lt;int:product_id&gt;&quot;</span></span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">get_product</span>(<span class="hljs-params">product_id</span>):
+    product = product_service.find(product_id)
+
+    <span class="hljs-keyword">if</span> product <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+        <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;error&quot;</span>: <span class="hljs-string">&quot;Product not found&quot;</span>}, <span class="hljs-number">404</span>
+
+    <span class="hljs-keyword">return</span> product.to_dict()
+</div></code></pre>
+<p>В новой части проекта уже используется FastAPI.</p>
+<p>Пример структуры нового приложения:</p>
+<pre class="hljs"><code><div>app/
+    main.py
+    routers/
+    services/
+    models/
+    schemas/
+</div></code></pre>
+<p>Обращение к базе данных должно оставаться внутри сервисного слоя. Маршрут не должен самостоятельно выполнять SQL-запросы.</p>
+<p>В новом проекте для входных и выходных данных используются Pydantic-модели.</p>
+<p>Существующий сервис <code>product_service.find(product_id)</code> пока должен быть сохранён. Его переписывание не входит в текущую задачу.</p>
+<p>При отсутствии товара клиент должен получать HTTP-статус <code>404</code>.</p>
+<p>URL нового API должен остаться совместимым с существующими клиентскими приложениями:</p>
+<pre class="hljs"><code><div>GET /products/{product_id}
+</div></code></pre>
+<p>В проекте уже существуют мобильное приложение и административная панель, использующие данный адрес. Изменение формата ответа может потребовать изменений в этих клиентах.</p>
+<p>Команда рассматривает применение ИИ для выполнения части миграции и адаптации существующего кода под новый стек.</p>
+<p>Рабочая задача заключается в переносе указанной функциональности с Flask на FastAPI без нарушения заданных ограничений.</p>
+<h2 id="кейс-3-автодополнение-при-разработке-функции">Кейс 3. Автодополнение при разработке функции</h2>
+<p>Разработчик работает над модулем интернет-магазина. Необходимо реализовать функцию расчёта итоговой стоимости заказа.</p>
+<p>В систему передаётся список товаров. Каждый товар содержит цену и количество.</p>
+<p>Фрагмент исходных данных может выглядеть следующим образом:</p>
+<pre class="hljs"><code><div>items = [{<span class="hljs-string">&quot;price&quot;</span>: <span class="hljs-number">1200</span>, <span class="hljs-string">&quot;quantity&quot;</span>: <span class="hljs-number">2</span>}, {<span class="hljs-string">&quot;price&quot;</span>: <span class="hljs-number">500</span>, <span class="hljs-string">&quot;quantity&quot;</span>: <span class="hljs-number">1</span>}]
+</div></code></pre>
+<p>Разработчик начинает писать функцию:</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">def</span> <span class="hljs-title function_">calculate_total</span>(<span class="hljs-params">items</span>):
+    total = <span class="hljs-number">0</span>
+
+    <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> items:
+</div></code></pre>
+<p>Среда разработки подключена к системе интеллектуального автодополнения кода. После ввода очередной строки система автоматически предлагает продолжение функции.</p>
+<p>Функция должна вычислять общую стоимость всех позиций заказа.</p>
+<p>Если список товаров пустой, функция должна возвращать <code>0</code>.</p>
+<p>Цена товара хранится в поле <code>price</code>, количество — в поле <code>quantity</code>.</p>
+<p>В дальнейшем в функцию потребуется добавить обработку скидок, однако в текущей версии скидки учитывать не требуется.</p>
+<p>После написания нескольких строк разработчик получает от системы автодополнения один или несколько вариантов продолжения кода.</p>
+<p>Предложения могут содержать как отдельную строку, так и сразу несколько строк реализации.</p>
+<p>Разработчик может принять предложение полностью, принять только его часть, отклонить предложение и продолжить написание функции самостоятельно либо изменить предложенный вариант после вставки.</p>
+<p>В команде планируется сравнить обычное ручное написание небольших функций и разработку с использованием интеллектуального автодополнения.</p>
+<p>Рабочая задача заключается в завершении функции <code>calculate_total(items)</code> в соответствии с указанными требованиями с возможностью использования автоматически предлагаемых фрагментов кода.</p>
+<h2 id="кейс-4-авторевью-изменений-перед-слиянием">Кейс 4. Авторевью изменений перед слиянием</h2>
+<p>Команда разрабатывает API интернет-магазина. Один из разработчиков подготовил изменение функции, отвечающей за получение пользователя по идентификатору.</p>
+<p>Изменение отправлено в Pull Request перед объединением с основной веткой проекта.</p>
+<p>В Pull Request появился следующий фрагмент:</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_user</span>(<span class="hljs-params">user_id</span>):
+    user = database.get_user(user_id)
+
+    <span class="hljs-keyword">if</span> user:
+        <span class="hljs-keyword">return</span> user
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+</div></code></pre>
+<p>В этом же Pull Request другой метод был изменён следующим образом:</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">def</span> <span class="hljs-title function_">delete_user</span>(<span class="hljs-params">user_id</span>):
+    database.delete_user(user_id)
+    <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;deleted&quot;</span>}
+</div></code></pre>
+<p>В проекте действует правило: операции получения, изменения и удаления объектов должны корректно обрабатывать ситуацию, когда объект с указанным идентификатором отсутствует.</p>
+<p>Для API также важно, чтобы внешнее поведение методов оставалось предсказуемым для клиентских приложений.</p>
+<p>Pull Request содержит около 350 изменённых строк в восьми файлах. Помимо показанных функций, были изменены модели, несколько API-маршрутов и тесты.</p>
+<p>В проекте уже настроено автоматическое выполнение тестов после создания Pull Request. На момент начала ревью основная часть тестов проходит успешно.</p>
+<p>Команда рассматривает возможность добавить автоматический анализ Pull Request с использованием ИИ до начала проверки человеком.</p>
+<p>Система авторевью получает изменённые фрагменты файлов и формирует комментарии к потенциально проблемным местам.</p>
+<p>Результат автоматического анализа не изменяет код самостоятельно. Он добавляет замечания непосредственно в Pull Request, после чего разработчик или ревьюер решает, необходимо ли вносить изменения.</p>
+<p>В рамках проекта особенно важны корректность обработки ошибок, сохранение совместимости API, читаемость кода и отсутствие очевидных дефектов в изменённых участках.</p>
+<p>Рабочая задача заключается в проведении ревью представленных изменений и остальных изменений Pull Request с использованием доступного механизма автоматического анализа кода.</p>
+
+</body>
+</html>
