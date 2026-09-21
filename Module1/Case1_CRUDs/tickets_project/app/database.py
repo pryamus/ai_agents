@@ -5,8 +5,8 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    # "sqlite:///./support.db"
-    "postgresql+psycopg://userdb:userdb@192.168.22.50:5432/exampledb",
+    "sqlite:///./support.db"
+    # "postgresql+psycopg://userdb:userdb@127.0.0.1:5432/exampledb",
 )
 
 engine = create_engine(DATABASE_URL, pool_pre_ping=True)
