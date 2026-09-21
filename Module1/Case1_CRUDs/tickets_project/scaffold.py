@@ -1,49 +1,17 @@
-# Prompt
-``
-Команда разрабатывает внутреннюю систему технической поддержки. Сотрудники компании смогут создавать заявки, связанные с неисправностями оборудования и программного обеспечения. На текущем этапе проекта уже существует серверное приложение и подключена база данных, однако модуль работы с заявками ещё не реализован.
+# scaffold.py
+from pathlib import Path
 
-В базе данных должна храниться сущность Ticket. Для каждой заявки необходимо хранить идентификатор, заголовок, описание проблемы, статус, дату создания и идентификатор сотрудника, создавшего заявку.
+FILES: dict[str, str] = {}
 
-Статус заявки может принимать значения new, in_progress, resolved и closed.
-
-Для сущности требуется реализовать стандартные CRUD-операции. Система должна позволять создать новую заявку, получить список заявок, получить одну заявку по идентификатору, изменить существующую заявку и удалить её.
-
-Проект использует Python, FastAPI, SQLAlchemy и PostgreSQL.`
-
-```
-
-
-Ниже — минимальная рабочая реализация CRUD для сущности `Ticket` на FastAPI + SQLAlchemy + PostgreSQL.
-
-## Структура проекта
-
-```text
-app/
-├── __init__.py
-├── database.py
-├── models.py
-├── schemas.py
-├── crud.py
-├── main.py
-└── routers/
-    ├── __init__.py
-    └── tickets.py
-requirements.txt
-```
-
-## `requirements.txt`
-
-```txt
-fastapi
+FILES["requirements.txt"] = """fastapi
 uvicorn[standard]
 sqlalchemy
 psycopg2-binary
-```
+"""
 
-## `app/database.py`
+FILES["app/__init__.py"] = ""
 
-```python
-import os
+FILES["app/database.py"] = '''import os
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
@@ -70,12 +38,9 @@ def get_db():
         yield db
     finally:
         db.close()
-```
+'''
 
-## `app/models.py`
-
-```python
-import enum
+FILES["app/models.py"] = '''import enum
 
 from sqlalchemy import Column, DateTime, Enum, Integer, String, Text, text
 from sqlalchemy.sql import func
@@ -113,18 +78,9 @@ class Ticket(Base):
     )
 
     employee_id = Column(Integer, nullable=False, index=True)
-```
+'''
 
-Если в системе уже есть таблица `employees`, можно добавить внешний ключ:
-
-```python
-# employee_id = Column(Integer, ForeignKey("employees.id"), nullable=False, index=True)
-```
-
-## `app/schemas.py`
-
-```python
-from datetime import datetime
+FILES["app/schemas.py"] = '''from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -154,12 +110,9 @@ class TicketRead(BaseModel):
     employee_id: int
 
     model_config = ConfigDict(from_attributes=True)
-```
+'''
 
-## `app/crud.py`
-
-```python
-from sqlalchemy.orm import Session
+FILES["app/crud.py"] = '''from sqlalchemy.orm import Session
 
 from . import models, schemas
 
@@ -224,12 +177,11 @@ def delete_ticket(db: Session, ticket_id: int) -> models.Ticket | None:
     db.delete(ticket)
     db.commit()
     return ticket
-```
+'''
 
-## `app/routers/tickets.py`
+FILES["app/routers/__init__.py"] = ""
 
-```python
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+FILES["app/routers/tickets.py"] = '''from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
 from .. import crud, schemas
@@ -300,12 +252,9 @@ def delete_ticket(
         raise HTTPException(status_code=404, detail="Ticket not found")
 
     return None
-```
+'''
 
-## `app/main.py`
-
-```python
-from fastapi import FastAPI
+FILES["app/main.py"] = '''from fastapi import FastAPI
 
 from . import models  # noqa: F401
 from .database import Base, engine
@@ -323,79 +272,146 @@ app.include_router(tickets.router)
 @app.get("/health")
 def health():
     return {"status": "ok"}
-```
+'''
 
-## Запуск
+FILES["requests.http"] = r'''### Переменные окружения
+@host = http://127.0.0.1:8000
+@ticketId = 1
 
-```bash
-pip install -r requirements.txt
+### Health check
+GET {{host}}/health
+Accept: application/json
 
-export DATABASE_URL="postgresql+psycopg2://postgres:postgres@localhost:5432/support_db"
-
-uvicorn app.main:app --reload
-```
-
-Документация Swagger будет доступна по адресу:
-
-```text
-http://127.0.0.1:8000/docs
-```
-
-## Примеры запросов
-
-### Создать заявку
-
-```http
-POST /tickets
+### Создать заявку (полный набор полей)
+# @name createTicket
+POST {{host}}/tickets
 Content-Type: application/json
-```
 
-```json
 {
   "title": "Не включается ноутбук",
   "description": "При нажатии кнопки питания нет реакции",
   "employee_id": 123
 }
-```
 
-Статус по умолчанию будет `new`.
+### Создать заявку со статусом in_progress
+POST {{host}}/tickets
+Content-Type: application/json
+
+{
+  "title": "Не работает корпоративная почта",
+  "description": "Ошибка авторизации в Outlook",
+  "status": "in_progress",
+  "employee_id": 456
+}
+
+### Создать заявку с невалидным статусом (ожидаем 422)
+POST {{host}}/tickets
+Content-Type: application/json
+
+{
+  "title": "Тест невалидного статуса",
+  "description": "Проверка валидации enum",
+  "status": "unknown",
+  "employee_id": 1
+}
+
+### Создать заявку без обязательного поля (ожидаем 422)
+POST {{host}}/tickets
+Content-Type: application/json
+
+{
+  "title": "Заявка без описания",
+  "employee_id": 1
+}
 
 ### Получить список заявок
+GET {{host}}/tickets
+Accept: application/json
 
-```http
-GET /tickets?skip=0&limit=10
-```
+### Получить список с пагинацией
+GET {{host}}/tickets?skip=0&limit=10
+Accept: application/json
 
-### Получить заявку по ID
+### Получить список с некорректным limit (ожидаем 422)
+GET {{host}}/tickets?limit=100000
+Accept: application/json
 
-```http
-GET /tickets/1
-```
+### Получить одну заявку по ID
+GET {{host}}/tickets/{{ticketId}}
+Accept: application/json
 
-### Изменить заявку
+### Получить несуществующую заявку (ожидаем 404)
+GET {{host}}/tickets/999999
+Accept: application/json
 
-```http
-PATCH /tickets/1
+### Обновить заголовок и описание
+PATCH {{host}}/tickets/{{ticketId}}
 Content-Type: application/json
-```
 
-```json
+{
+  "title": "Ноутбук не включается (обновлено)",
+  "description": "Проверены блок питания и батарея"
+}
+
+### Обновить только статус
+PATCH {{host}}/tickets/{{ticketId}}
+Content-Type: application/json
+
 {
   "status": "in_progress"
 }
-```
 
-### Удалить заявку
+### Перевести заявку в resolved
+PATCH {{host}}/tickets/{{ticketId}}
+Content-Type: application/json
 
-```http
-DELETE /tickets/1
-```
+{
+  "status": "resolved"
+}
 
-Статусы заявки ограничены значениями:
+### Закрыть заявку
+PATCH {{host}}/tickets/{{ticketId}}
+Content-Type: application/json
 
-```text
-new
-in_progress
-resolved
-closed
-```
+{
+  "status": "closed"
+}
+
+### Обновить с невалидным статусом (ожидаем 422)
+PATCH {{host}}/tickets/{{ticketId}}
+Content-Type: application/json
+
+{
+  "status": "done"
+}
+
+### Обновить несуществующую заявку (ожидаем 404)
+PATCH {{host}}/tickets/999999
+Content-Type: application/json
+
+{
+  "status": "closed"
+}
+
+### Удалить заявку (ожидаем 204)
+DELETE {{host}}/tickets/{{ticketId}}
+
+### Удалить несуществующую заявку (ожидаем 404)
+DELETE {{host}}/tickets/999999
+
+### Проверить, что заявка удалена (ожидаем 404)
+GET {{host}}/tickets/{{ticketId}}
+Accept: application/json
+'''
+
+
+def main() -> None:
+    for rel_path, content in FILES.items():
+        path = Path(rel_path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+        print(f"created: {rel_path}")
+
+
+if __name__ == "__main__":
+    main()
