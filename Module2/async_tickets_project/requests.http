@@ -1,0 +1,128 @@
+### Переменные окружения
+@host = http://127.0.0.1:8000
+@ticketId = 1
+
+### Health check
+GET {{host}}/health
+Accept: application/json
+
+### Создать заявку (полный набор полей)
+# @name createTicket
+POST {{host}}/tickets
+Content-Type: application/json
+
+{
+  "title": "Не включается ноутбук",
+  "description": "При нажатии кнопки питания нет реакции",
+  "employee_id": 123
+}
+
+### Создать заявку со статусом in_progress
+POST {{host}}/tickets
+Content-Type: application/json
+
+{
+  "title": "Не работает корпоративная почта",
+  "description": "Ошибка авторизации в Outlook",
+  "status": "in_progress",
+  "employee_id": 456
+}
+
+### Создать заявку с невалидным статусом (ожидаем 422)
+POST {{host}}/tickets
+Content-Type: application/json
+
+{
+  "title": "Тест невалидного статуса",
+  "description": "Проверка валидации enum",
+  "status": "unknown",
+  "employee_id": 1
+}
+
+### Создать заявку без обязательного поля (ожидаем 422)
+POST {{host}}/tickets
+Content-Type: application/json
+
+{
+  "title": "Заявка без описания",
+  "employee_id": 1
+}
+
+### Получить список заявок
+GET {{host}}/tickets
+Accept: application/json
+
+### Получить список с пагинацией
+GET {{host}}/tickets?skip=0&limit=10
+Accept: application/json
+
+### Получить список с некорректным limit (ожидаем 422)
+GET {{host}}/tickets?limit=100000
+Accept: application/json
+
+### Получить одну заявку по ID
+GET {{host}}/tickets/{{ticketId}}
+Accept: application/json
+
+### Получить несуществующую заявку (ожидаем 404)
+GET {{host}}/tickets/999999
+Accept: application/json
+
+### Обновить заголовок и описание
+PATCH {{host}}/tickets/{{ticketId}}
+Content-Type: application/json
+
+{
+  "title": "Ноутбук не включается (обновлено)",
+  "description": "Проверены блок питания и батарея"
+}
+
+### Обновить только статус
+PATCH {{host}}/tickets/{{ticketId}}
+Content-Type: application/json
+
+{
+  "status": "in_progress"
+}
+
+### Перевести заявку в resolved
+PATCH {{host}}/tickets/{{ticketId}}
+Content-Type: application/json
+
+{
+  "status": "resolved"
+}
+
+### Закрыть заявку
+PATCH {{host}}/tickets/{{ticketId}}
+Content-Type: application/json
+
+{
+  "status": "closed"
+}
+
+### Обновить с невалидным статусом (ожидаем 422)
+PATCH {{host}}/tickets/{{ticketId}}
+Content-Type: application/json
+
+{
+  "status": "done"
+}
+
+### Обновить несуществующую заявку (ожидаем 404)
+PATCH {{host}}/tickets/999999
+Content-Type: application/json
+
+{
+  "status": "closed"
+}
+
+### Удалить заявку (ожидаем 204)
+DELETE {{host}}/tickets/{{ticketId}}
+
+### Удалить несуществующую заявку (ожидаем 404)
+DELETE {{host}}/tickets/999999
+
+### Проверить, что заявка удалена (ожидаем 404)
+GET {{host}}/tickets/{{ticketId}}
+Accept: application/json
