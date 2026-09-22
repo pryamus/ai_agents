@@ -4,13 +4,13 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request, Response
 from fastapi.responses import JSONResponse
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+from redis.asyncio import Redis
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 from slowapi.util import get_remote_address
-from fastapi_cache import FastAPICache
-from fastapi_cache.backends.redis import RedisBackend
-from redis.asyncio import Redis
 
 from . import models  # noqa: F401  (важно: импорт регистрирует модели в Base.metadata)
 from .database import Base, engine
@@ -90,9 +90,7 @@ app.add_middleware(SlowAPIMiddleware)
 
 
 @app.exception_handler(TicketNotFoundError)
-async def ticket_not_found_handler(
-    request: Request, exc: TicketNotFoundError
-) -> JSONResponse:
+async def ticket_not_found_handler(request: Request, exc: TicketNotFoundError) -> JSONResponse:
     return JSONResponse(status_code=404, content={"detail": "Ticket not found"})
 
 

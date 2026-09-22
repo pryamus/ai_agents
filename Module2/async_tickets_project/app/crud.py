@@ -20,12 +20,7 @@ async def get_tickets(
     skip: int = 0,
     limit: int = 100,
 ) -> list[models.Ticket]:
-    stmt = (
-        select(models.Ticket)
-        .order_by(models.Ticket.id)
-        .offset(skip)
-        .limit(limit)
-    )
+    stmt = select(models.Ticket).order_by(models.Ticket.id).offset(skip).limit(limit)
     result = await db.execute(stmt)
     return list(result.scalars().all())
 

@@ -6,7 +6,7 @@ from sqlalchemy.sql import func
 from .database import Base
 
 
-class TicketStatus(str, enum.Enum):
+class TicketStatus(enum.StrEnum):
     new = "new"
     in_progress = "in_progress"
     resolved = "resolved"

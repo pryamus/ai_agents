@@ -1,8 +1,7 @@
 import pytest
-from pydantic import ValidationError
-
 from app import models, schemas
 from app.services import TicketNotFoundError, TicketService
+from pydantic import ValidationError
 
 
 @pytest.fixture

@@ -18,9 +18,7 @@ async def _invalidate_tickets_list_cache() -> None:
     try:
         await FastAPICache.clear("list")
     except Exception:
-        logger.warning(
-            "Не удалось инвалидировать кэш списка тикетов", exc_info=True
-        )
+        logger.warning("Не удалось инвалидировать кэш списка тикетов", exc_info=True)
 
 
 class TicketNotFoundError(Exception):

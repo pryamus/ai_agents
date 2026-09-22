@@ -77,9 +77,7 @@ async def list_tickets(
     # response_model на маршруте при этом валидирует dict'ы в TicketRead.
     tickets = await service.list_tickets(skip=skip, limit=limit)
     return [
-        schemas.TicketRead.model_validate(t, from_attributes=True).model_dump(
-            mode="json"
-        )
+        schemas.TicketRead.model_validate(t, from_attributes=True).model_dump(mode="json")
         for t in tickets
     ]
 
