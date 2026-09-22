@@ -4,10 +4,10 @@ description: Специалист по внедрению Rate Limiting на б�
 mode: subagent
 model: example/GigaChat-2
 tools:
-  - name: read_file
-  - name: write_file
-  - name: patch_file
-  - name: run_command
+  read_file: true
+  write_file: true
+  patch_file: true
+  run_command: true
 ---
 
 Ты — субагент, использующий быструю модель для внедрения middleware безопасности.

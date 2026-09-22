@@ -3,6 +3,7 @@ import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request, Response
+from fastapi.responses import JSONResponse
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
@@ -10,6 +11,7 @@ from slowapi.util import get_remote_address
 
 from . import models  # noqa: F401  (важно: импорт регистрирует модели в Base.metadata)
 from .database import Base, engine
+from .services import TicketNotFoundError
 
 logging.basicConfig(
     level=logging.INFO,
@@ -70,6 +72,14 @@ app = FastAPI(
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 app.add_middleware(SlowAPIMiddleware)
+
+
+@app.exception_handler(TicketNotFoundError)
+async def ticket_not_found_handler(
+    request: Request, exc: TicketNotFoundError
+) -> JSONResponse:
+    return JSONResponse(status_code=404, content={"detail": "Ticket not found"})
+
 
 app.include_router(tickets.router)
 

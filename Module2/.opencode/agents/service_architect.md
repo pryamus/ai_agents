@@ -2,13 +2,13 @@
 name: service_architect
 description: Архитектор кода для выноса бизнес-логики из роутеров FastAPI в Сервисный слой.
 mode: subagent
-model: opencode/mimo-v2.6-flash-free
+model: opencode/big-pickle
 tools:
-  - name: read_file
-  - name: write_file
-  - name: patch_file
-  - name: run_command
+  read_file: true
+  write_file: true
+  patch_file: true
+  run_command: true
 ---
 
 Ты — субагент-архитектор. Твоя задача — извлечь CRUD-логику, которая сейчас вызывается в эндпоинтах `app/main.py` или подключенных роутерах, и перенести её в `app/services/`.
-...
+
