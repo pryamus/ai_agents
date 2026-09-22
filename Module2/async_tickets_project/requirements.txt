@@ -2,3 +2,5 @@ fastapi
 uvicorn[standard]
 sqlalchemy[asyncio]
 psycopg[binary]
+slowapi==0.1.10
+redis==8.1.0

@@ -1,8 +1,17 @@
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    Query,
+    Request,
+    Response,
+    status,
+)
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .. import crud, schemas
 from ..database import get_db
+from ..main import limiter
 
 router = APIRouter(prefix="/tickets", tags=["tickets"])
 
@@ -12,7 +21,10 @@ router = APIRouter(prefix="/tickets", tags=["tickets"])
     response_model=schemas.TicketRead,
     status_code=status.HTTP_201_CREATED,
 )
+@limiter.limit("5/minute")
 async def create_ticket(
+    request: Request,
+    response: Response,
     ticket: schemas.TicketCreate,
     db: AsyncSession = Depends(get_db),
 ):
@@ -20,7 +32,10 @@ async def create_ticket(
 
 
 @router.get("", response_model=list[schemas.TicketRead])
+@limiter.limit("60/minute")
 async def list_tickets(
+    request: Request,
+    response: Response,
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=1000),
     db: AsyncSession = Depends(get_db),
@@ -29,7 +44,10 @@ async def list_tickets(
 
 
 @router.get("/{ticket_id}", response_model=schemas.TicketRead)
+@limiter.limit("60/minute")
 async def get_ticket(
+    request: Request,
+    response: Response,
     ticket_id: int,
     db: AsyncSession = Depends(get_db),
 ):
@@ -42,7 +60,10 @@ async def get_ticket(
 
 
 @router.patch("/{ticket_id}", response_model=schemas.TicketRead)
+@limiter.limit("60/minute")
 async def update_ticket(
+    request: Request,
+    response: Response,
     ticket_id: int,
     ticket: schemas.TicketUpdate,
     db: AsyncSession = Depends(get_db),
@@ -59,7 +80,10 @@ async def update_ticket(
     "/{ticket_id}",
     status_code=status.HTTP_204_NO_CONTENT,
 )
+@limiter.limit("60/minute")
 async def delete_ticket(
+    request: Request,
+    response: Response,
     ticket_id: int,
     db: AsyncSession = Depends(get_db),
 ):
