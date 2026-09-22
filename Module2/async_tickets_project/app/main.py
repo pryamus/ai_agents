@@ -8,6 +8,9 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 from slowapi.util import get_remote_address
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+from redis.asyncio import Redis
 
 from . import models  # noqa: F401  (важно: импорт регистрирует модели в Base.metadata)
 from .database import Base, engine
@@ -19,6 +22,18 @@ logging.basicConfig(
 )
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://127.0.0.1:6379/0")
+
+# fastapi-cache2: общий Redis-бэкенд для кэша ответов (см. routers/tickets.py).
+# init на уровне модуля — кэш доступен даже без запуска lifespan (декоратор @cache
+# иначе падает по assert в FastAPICache.get_backend()). Redis.from_url ленивый:
+# соединение откроется при первом обращении, не при импорте.
+# prefix="tickets" — пространство ключей кэша; ключи slowapi (rate limit)
+# в этом пространстве не лежат и не затираются при инвалидации.
+FastAPICache.init(
+    RedisBackend(Redis.from_url(REDIS_URL)),
+    prefix="tickets",
+    expire=30,
+)
 
 
 class FallbackLimiter(Limiter):

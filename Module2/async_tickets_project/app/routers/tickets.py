@@ -6,6 +6,7 @@ from fastapi import (
     Response,
     status,
 )
+from fastapi_cache.decorator import cache
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .. import schemas
@@ -15,9 +16,35 @@ from ..services import TicketService
 
 router = APIRouter(prefix="/tickets", tags=["tickets"])
 
+# TTL кэша списка тикетов, сек. Явно задаётся в @cache; см. также init в main.py.
+TICKETS_LIST_CACHE_TTL = 30
+
 
 def get_ticket_service(db: AsyncSession = Depends(get_db)) -> TicketService:
     return TicketService(db)
+
+
+def tickets_list_cache_key(
+    func,
+    namespace: str = "",
+    *,
+    request: Request | None = None,
+    response: Response | None = None,
+    args=(),
+    kwargs=None,
+) -> str:
+    """Ключ кэша GET /tickets — только из пагинации skip/limit.
+
+    В kwargs приходят и request-параметры, и разрешённый Depends(service):
+    service нестабилен между запросами, поэтому в ключ не входит.
+    namespace на входе = "tickets:" (prefix fastapi-cache2), итоговый ключ:
+    tickets:list:skip={skip}:limit={limit} — по нему работает инвалидация
+    FastAPICache.clear("list") -> KEYS tickets:list:*.
+    """
+    kwargs = kwargs or {}
+    skip = kwargs.get("skip", 0)
+    limit = kwargs.get("limit", 100)
+    return f"{namespace}list:skip={skip}:limit={limit}"
 
 
 @router.post(
@@ -37,6 +64,7 @@ async def create_ticket(
 
 @router.get("", response_model=list[schemas.TicketRead])
 @limiter.limit("60/minute")
+@cache(expire=TICKETS_LIST_CACHE_TTL, key_builder=tickets_list_cache_key)
 async def list_tickets(
     request: Request,
     response: Response,
@@ -44,7 +72,16 @@ async def list_tickets(
     limit: int = Query(100, ge=1, le=1000),
     service: TicketService = Depends(get_ticket_service),
 ):
-    return await service.list_tickets(skip=skip, limit=limit)
+    # Возвращаем JSON-ready dict'ы: JsonCoder (по умолчанию у fastapi-cache2)
+    # кодирует ответ через json.dumps — ORM-объекты он сериализовать не умеет.
+    # response_model на маршруте при этом валидирует dict'ы в TicketRead.
+    tickets = await service.list_tickets(skip=skip, limit=limit)
+    return [
+        schemas.TicketRead.model_validate(t, from_attributes=True).model_dump(
+            mode="json"
+        )
+        for t in tickets
+    ]
 
 
 @router.get("/{ticket_id}", response_model=schemas.TicketRead)

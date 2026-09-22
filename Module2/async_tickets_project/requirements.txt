@@ -4,3 +4,4 @@ sqlalchemy[asyncio]
 psycopg[binary]
 slowapi==0.1.10
 redis==8.1.0
+fastapi-cache2==0.2.2
