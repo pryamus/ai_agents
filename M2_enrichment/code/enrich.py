@@ -17,10 +17,10 @@ from pathlib import Path
 
 LAB = Path(__file__).resolve().parent
 sys.path.insert(0, str(LAB))
-_CODE_ROOT = LAB.parent
+_CODE_ROOT = LAB.parent.parent
 if str(_CODE_ROOT) not in sys.path:
     sys.path.insert(0, str(_CODE_ROOT))  # import shared / lab_2_4_rag
-_LAB_2_4 = _CODE_ROOT / "lab_2_4_rag"
+_LAB_2_4 = _CODE_ROOT / "M2_rag" / "code"
 if str(_LAB_2_4) not in sys.path:
     # модули 2.4 импортируют соседей как top-level (from index import ...):
     # для кросс-лабораторного импорта нужен их каталог в пути
@@ -47,7 +47,7 @@ class EnrichedContext:
     stale_sources: list[str] = field(default_factory=list)  # просроченный кэш
 
 
-def build_docs_index(cache: DocCache, *, embedder: str = "tfidf") -> VectorIndex:
+def build_docs_index(cache: DocCache, *, embedder: str = "minilm") -> VectorIndex:
     """Проиндексировать содержимое кэша чанкингом и эмбеддером из 2.4."""
     emb = make_embedder(embedder)
     chunks = []
