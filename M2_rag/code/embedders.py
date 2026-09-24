@@ -132,7 +132,8 @@ class MiniLMEmbedder(Embedder):
         # поддерживаем обе версии пакета
         getter = getattr(self._model, "get_embedding_dimension", None)
         if getter is None:
-            getter = self._model.get_sentence_embedding_dimension
+            # getter = self._model.get_sentence_embedding_dimension
+            getter = self._model.get_embedding_dimension
         self._dim = int(getter())
 
     @property

@@ -71,3 +71,9 @@ lab_2_4_rag/
 3. Что такое overlap и когда без него не обойтись?
 4. Чем RAG отличается от long-context стратегии и когда какая лучше?
 5. Как изменится recall, если уменьшить k с 5 до 1? А latency?
+
+### Варианты моделей
+1. https://huggingface.co/sergeyzh/BERTA
+2. https://huggingface.co/ai-forever/FRIDA
+3. https://huggingface.co/Qwen/Qwen3-Embedding-0.6B
+4. + Chroma (ChromaDB) 
