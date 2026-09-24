@@ -23,7 +23,7 @@ if str(_CODE_ROOT) not in sys.path:
 
 from tool_registry import ToolError, ToolRegistry, tool
 
-from lab_2_4_rag.chunker import SKIP_DIRS
+from chunker import SKIP_DIRS
 
 GIT_TIMEOUT = 10
 RUFF_TIMEOUT = 25
