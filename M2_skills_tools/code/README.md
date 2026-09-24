@@ -38,6 +38,9 @@ lab_2_6_tools/
    ```
 
 3. **MCP-сервер (бонус) и подключение к opencode:**
+   ```bash
+   uv add "mcp[cli]"
+   ```
 
    ```bash
    uvicorn mcp_server:app --port 8000                       # терминал 1
