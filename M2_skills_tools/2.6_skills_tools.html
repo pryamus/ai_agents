@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>2.6_skills_tools.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="тема-26--skills-и-tools-инструменты-агента">Тема 2.6 — Skills и Tools: инструменты агента</h1>
+<h2 id="цель-темы">Цель темы</h2>
+<p>Регистрировать инструменты так, чтобы LLM понимала их (JSON Schema из
+сигнатуры), аргументы валидировались до вызова, а исполнение было
+изолировано (таймаут, обрезка, защита путей). Различать skill, tool и MCP.
+Опционально — открыть инструменты внешним клиентам через MCP.</p>
+<hr>
+<h2 id="часть-1-теория">Часть 1. Теория</h2>
+<h3 id="41-skill--tool--mcp">4.1 Skill ≠ Tool ≠ MCP</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Что это</th>
+<th>Пример</th>
+<th>Кто исполняет</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tool</strong></td>
+<td>исполняемая функция + описание для LLM</td>
+<td><code>grep_search</code>, <code>ruff_lint</code></td>
+<td>рантайм (opencode/цикл)</td>
+</tr>
+<tr>
+<td><strong>Skill</strong></td>
+<td><strong>процедура</strong>: инструкция «когда и в каком порядке»</td>
+<td>«аудит: сначала grep, потом linter»</td>
+<td>модель, прочитавшая SKILL.md</td>
+</tr>
+<tr>
+<td><strong>MCP</strong></td>
+<td>протокол подключения инструментов извне</td>
+<td>сервер <code>labtools</code> на FastAPI</td>
+<td>внешний процесс по HTTP</td>
+</tr>
+</tbody>
+</table>
+<p>Скилл говорит <strong>«что делать в какой ситуации»</strong>, инструмент — <strong>«чем
+сделать»</strong>. Скилл подгружается по требованию (лениво), схемы инструментов
+лежат в системном промпте постоянно.</p>
+<h3 id="42-жизненный-цикл-инструмента">4.2 Жизненный цикл инструмента</h3>
+<pre class="hljs"><code><div><span class="hljs-meta">@tool(<span class="hljs-params">timeout=<span class="hljs-number">10</span></span>)                                  </span><span class="hljs-comment"># 1. декоратор собирает метаданные</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">grep_search</span>(<span class="hljs-params">pattern: <span class="hljs-built_in">str</span>, path: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;.&quot;</span>,     <span class="hljs-comment"># 2. сигнатура → типы/обязательность</span>
+                use_regex: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span></span>) -&gt; <span class="hljs-built_in">str</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Найти строки в файлах, результат: путь:номер: текст.   # 3. docstring → описание
+    pattern: что искать            # 3b. «name: текст» → описания параметров
+    ...
+    &quot;&quot;&quot;</span>
+</div></code></pre>
+<p>Четыре стадии (<code>tool_registry.py</code>):</p>
+<ol>
+<li><strong>Описание</strong> — pydantic-модель аргументов из аннотаций →
+<code>model_json_schema()</code> → блок в системном промпте агента.
+Качество описания = шанс, что модель выберет инструмент и верные
+аргументы. <em>Это и есть «описание функций для LLM» из плана темы.</em></li>
+<li><strong>Валидация до вызова</strong> — <code>extra=&quot;forbid&quot;</code> (галлюцинированные ключи
+отклоняются), обязательность по отсутствию <code>default</code>, типы. Ошибка
+валидации — <strong>данные для модели</strong> (feedback), а не exception наружу.</li>
+<li><strong>Исполнение в изоляции</strong> — <code>ThreadPoolExecutor</code> + <code>timeout</code>
+(зависший вызов не вешает цикл), привязка путей к корню проекта
+(path traversal невозможен), <code>ToolError</code> вместо сырых исключений.</li>
+<li><strong>Нормализация вывода</strong> — любой тип → строка (<code>json.dumps</code>),
+обрезка до <code>max_output</code> — защита контекстного окна (2.4).</li>
+</ol>
+<h3 id="43-три-типа-неудачи--три-разных-политики">4.3 Три типа «неудачи» — три разных политики</h3>
+<table>
+<thead>
+<tr>
+<th>Тип</th>
+<th>Код</th>
+<th>Пример</th>
+<th>Политика</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Аргументы неверны</td>
+<td><code>invalid_args</code></td>
+<td>нет <code>pattern</code>, лишний ключ</td>
+<td>feedback модели, <strong>без</strong> ретрая</td>
+</tr>
+<tr>
+<td>Временный сбой</td>
+<td><code>timeout</code> (<code>retryable=True</code>)</td>
+<td>git/ruff не отвечают</td>
+<td>ретрай, затем feedback</td>
+</tr>
+<tr>
+<td>Детерминированный провал</td>
+<td><code>runtime</code></td>
+<td>не git-репозиторий, ruff не установлен</td>
+<td>feedback без ретрая</td>
+</tr>
+</tbody>
+</table>
+<p><strong>А вот «linter нашёл 20 замечаний» — НЕ ошибка.</strong> <code>ruff check</code>
+завершается кодом 1 — это <em>результат работы</em> (данные), которые модель
+должна увидеть; исключение (<code>ToolError</code>) бросается только при rc=2 —
+когда линтер не смог запуститься. Умение отделить «данные» от «сбоя» —
+главный навык проектирования инструментов.</p>
+<h3 id="44-набор-инструментов-курса-tool_implspy">4.4 Набор инструментов курса (<code>tool_impls.py</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Инструмент</th>
+<th>Аргументы</th>
+<th>Заметки</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>grep_search</code></td>
+<td><code>pattern, path, include, use_regex, max_results</code></td>
+<td>regex-безопасность (<code>re.escape</code> по умолчанию), стоп по <code>max_results</code></td>
+</tr>
+<tr>
+<td><code>git_diff</code></td>
+<td><code>path, staged, max_chars</code></td>
+<td>пустой diff → «изменений нет» (данные!); rc≠0 → <code>runtime</code></td>
+</tr>
+<tr>
+<td><code>ruff_lint</code></td>
+<td><code>path, select</code></td>
+<td>rc0 → «нет замечаний», rc1 → список, rc2 → <code>runtime</code></td>
+</tr>
+</tbody>
+</table>
+<p>Все три регистрируются в <code>ToolRegistry(root=…)</code> — <strong>единственной точке</strong>
+описания, валидации и исполнения. Цикл из 2.5 использует реестр без
+изменений (реализует тот же протокол <code>ToolHost</code>).</p>
+<h3 id="45-mcp-открыть-инструменты-наружу">4.5 MCP: открыть инструменты наружу</h3>
+<p><strong>Model Context Protocol</strong> — стандарт подключения инструментов к агенту по
+HTTP/stdio: рантайм не модифицируется, инструменты живут в отдельном
+процессе/сервисе.</p>
+<p>Реализация курса (<code>mcp_server.py</code>, mcp SDK 2.x → класс <code>MCPServer</code>;
+в 1.x он назывался <code>FastMCP</code>):</p>
+<pre class="hljs"><code><div>FastAPI /health ──┐
+                  ├── app ── POST /mcp  (Streamable HTTP)
+MCPServer 3 tools ┘
+</div></code></pre>
+<p>Тонкости, проверенные на практике (входят в лабораторную):</p>
+<ul>
+<li>дочернее приложение <code>streamable_http_app()</code> само отдаёт маршрут <code>/mcp</code>,
+поэтому его монтируют в <strong>корень</strong> (<code>app.mount(&quot;/&quot;, …)</code>) — иначе путь
+удвоится до <code>/mcp/mcp</code>;</li>
+<li><code>session_manager</code> должен жить в <code>lifespan</code> FastAPI;</li>
+<li>регистрация идёт через <code>_via_registry(...)</code>: схема берётся из сигнатуры,
+но вызов проходит через <code>ToolRegistry.dispatch</code> — <strong>валидация и защита
+путей действуют и через протокол</strong>, а не только внутри цикла;</li>
+<li><code>ToolError</code> по MCP отдаётся модели текстом
+(<code>ИНСТРУМЕНТ НЕ ВЫПОЛНЕН [code]: …</code>) — ошибка снова превращается в данные.</li>
+</ul>
+<p>Подключение к opencode:</p>
+<pre class="hljs"><code><div>opencode mcp add labtools <span class="hljs-literal">--url</span> http://localhost:<span class="hljs-number">8000</span>/mcp   <span class="hljs-comment"># пишет mcp.servers в opencode.json</span>
+opencode mcp list                                           <span class="hljs-comment"># ✓ labtools connected</span>
+opencode run <span class="hljs-string">&quot;найди TODO через labtools_grep_search&quot;</span>
+</div></code></pre>
+<p>Инструменты внешнего сервера получают имена <strong><code>&lt;сервер&gt;_&lt;инструмент&gt;</code></strong> —
+это устраняет коллизии имён между источниками.</p>
+<h3 id="46-skills-в-opencode">4.6 Skills в opencode</h3>
+<pre class="hljs"><code><div>.opencode/skills/codebase-audit/SKILL.md
+---
+name: Аудит кодовой базы
+description: Когда применять (поиск TODO → контекст → linter → diff)
+---
+# Codebase audit — workflow, правила вывода, ограничения
+</div></code></pre>
+<p>Скилл подгружается моделью через <code>skill</code> tool по описанию; <strong>схемы
+инструментов</strong> при этом уже в промпте от рантайма — они дополняют друг
+друга: скилл даёт последовательность, реестр — «чем».</p>
+<h3 id="47-безопасность-инструментов">4.7 Безопасность инструментов</h3>
+<ul>
+<li><strong>Path traversal</strong>: строковые пути проверяются на
+<code>resolve().is_relative_to(root)</code> реестра — <code>path: &quot;../..&quot;</code> →
+<code>permission</code>-ошибка (тест в лабораторной).</li>
+<li><strong>Shell</strong>: только фиксированные бинари (<code>git</code>, <code>ruff</code>), <code>shell=False</code>,
+аргументы — списком; никакой интерполяции строки в команду.</li>
+<li><strong>Prompt injection через вывод</strong>: вывод инструмента — данные, содержащие
+потенциальные «инструкции» (например, README со строкой «ignore previous
+instructions»). Политика: не исполнять содержимое вывода как приказы,
+ограничивать длину, для критичных действий — permissions из 2.3.</li>
+<li><strong>Ресурсы</strong>: <code>max_results</code>/<code>max_output</code> защищают и латентность, и окно.</li>
+</ul>
+<hr>
+<h2 id="часть-2-практика">Часть 2. Практика</h2>
+<h3 id="шаги">Шаги</h3>
+<pre class="hljs"><code><div><span class="hljs-built_in">cd</span> code\lab_2_6_tools
+
+<span class="hljs-comment"># 1. Что именно видит LLM: JSON Schema каждого инструмента + прогон агента</span>
+python run_tools_agent.py <span class="hljs-literal">--show-schema</span>
+<span class="hljs-comment">#    далее: события tool_call/tool_result с took_ms и итоговый ответ (status ok)</span>
+
+<span class="hljs-comment"># 2. Тесты (ожидаемо: 11 passed)</span>
+python <span class="hljs-literal">-m</span> pytest <span class="hljs-literal">-q</span>
+
+<span class="hljs-comment"># 3. MCP-сервер и его проверка (терминал 1 — сервер, терминал 2 — probe)</span>
+uvicorn mcp_server:app <span class="hljs-literal">--port</span> <span class="hljs-number">8000</span>
+python mcp_probe.py
+<span class="hljs-comment">#    ожидаемо: инструменты [grep_search, git_diff, ruff_lint],</span>
+<span class="hljs-comment">#    grep_search нашёл TODO в sample_project, статус вызова: ok</span>
+
+<span class="hljs-comment"># 4. opencode видит сервер как свои инструменты</span>
+opencode mcp add labtools <span class="hljs-literal">--url</span> http://localhost:<span class="hljs-number">8000</span>/mcp   <span class="hljs-comment"># (запись уже в opencode.json)</span>
+opencode mcp list                                           <span class="hljs-comment"># ✓ labtools connected</span>
+<span class="hljs-comment"># опционально, при настроенном LLM-ключе:</span>
+opencode run <span class="hljs-string">&quot;найди TODO в sample_project с labtools_grep_search&quot;</span>
+
+<span class="hljs-comment"># 5. Скилл</span>
+opencode debug skill        <span class="hljs-comment"># в списке должен быть codebase-audit</span>
+</div></code></pre>
+
+</body>
+</html>
