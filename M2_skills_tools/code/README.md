@@ -47,7 +47,9 @@ lab_2_6_tools/
    opencode mcp add labtools --url http://localhost:8000/mcp  # терминал 2 (из каталога лаборатории)
    opencode mcp list                                         # labtools: connected
    opencode run "найди TODO в sample_project с labtools_grep_search"
-   opencode mcp remove labtools                              # после практики
+   opencode mcp remove labtools                              # после практики, пока не работает
+   # https://github.com/anomalyco/opencode/issues/17088
+   # Удалять нужно вручную из ~/.config/opencode/opencode.jsonc
    ```
 
    Инструменты у opencode получают имена `<сервер>_<инструмент>`.
