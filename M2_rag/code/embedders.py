@@ -20,7 +20,8 @@ from __future__ import annotations
 import os
 from abc import ABC, abstractmethod
 from pathlib import Path
-
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.preprocessing import normalize
 import numpy as np
 
 DEFAULT_MINILM_MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
@@ -62,8 +63,6 @@ class TfidfEmbedder(Embedder):
     name = "tfidf"
 
     def __init__(self, max_features: int = 30_000, ngram_range: tuple[int, int] = (1, 2)) -> None:
-        from sklearn.feature_extraction.text import TfidfVectorizer
-
         self._vectorizer = TfidfVectorizer(
             max_features=max_features,
             ngram_range=ngram_range,
@@ -86,7 +85,7 @@ class TfidfEmbedder(Embedder):
         self._fitted = True
 
     def encode(self, texts: list[str]) -> np.ndarray:
-        from sklearn.preprocessing import normalize
+
 
         if not self._fitted:
             raise EmbedderError("TF-IDF не обучен: сначала fit() по корпусу")
