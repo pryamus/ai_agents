@@ -1496,6 +1496,16 @@ namespace Stateless.Tests
         }
 
         [Fact]
+        public void CanFire_ReportsAsyncTransitionAsPermitted()
+        {
+            var sm = new StateMachine<State, Trigger>(State.A);
+            sm.Configure(State.A)
+              .PermitIfAsync(Trigger.X, State.B, () => Task.FromResult(true));
+
+            Assert.True(sm.CanFire(Trigger.X));
+        }
+
+        [Fact]
         public void CanFire_GetUnmetGuardDescriptionsIfGuardFails()
         {
             const string guardDescription = "Guard failed";

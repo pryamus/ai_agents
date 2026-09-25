@@ -314,6 +314,29 @@ namespace Stateless.Tests
 
             Assert.Equal("foo", test); // Should await action
         }
+
+        [Fact]
+        public async Task FireAsync_PreservesUnmetGuardDescriptions()
+        {
+            const string guardDescription = "Async guard failed";
+            var sm = new StateMachine<State, Trigger>(State.A);
+
+            sm.Configure(State.A)
+              .PermitIfAsync(Trigger.X, State.B, () => Task.FromResult(false), guardDescription);
+
+            ICollection<string> unmetGuards = null;
+            sm.OnUnhandledTriggerAsync((state, trigger, guards) =>
+            {
+                unmetGuards = guards;
+                return TaskResult.Done;
+            });
+
+            await sm.FireAsync(Trigger.X).ConfigureAwait(false);
+
+            Assert.NotNull(unmetGuards);
+            Assert.Contains(guardDescription, unmetGuards);
+        }
+
         [Fact]
         public void WhenSyncFireOnUnhandledTriggerAsyncTask()
         {
