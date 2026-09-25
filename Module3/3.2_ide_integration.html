@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>3.2_ide_integration.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="тема-32--интеграция-среды-разработки-и-ai-инструментов">Тема 3.2 — Интеграция среды разработки и AI-инструментов</h1>
+<h2 id="цель-темы">Цель темы</h2>
+<p>Собрать связку IDE + агент + инструменты (linter, formatter, git):
+проверить окружение doctor'ом и описать IDE-конфиги как код.</p>
+<hr>
+<h2 id="часть-1-теория">Часть 1. Теория</h2>
+<h3 id="слои-связки">Слои связки</h3>
+<pre class="hljs"><code><div>IDE (редактор, задачи, рекомендации расширений)
+ ├── CLI-агент (opencode run / IDE-плагин) — исполнение
+ ├── Инструменты (pytest, ruff, git) — проверки
+ └── Конфиги проекта (opencode.jsonc, AGENTS.md, .vscode) — правила
+</div></code></pre>
+<h3 id="ide-плагины-vs-cli-агенты-vs-облаколокаль">IDE-плагины vs CLI-агенты vs облако/локаль</h3>
+<table>
+<thead>
+<tr>
+<th>Вариант</th>
+<th>Плюсы</th>
+<th>Минусы</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IDE-плагин</td>
+<td>контекст редактора, inline-правки</td>
+<td>привязка к IDE, версия плагина</td>
+</tr>
+<tr>
+<td>CLI-агент (opencode)</td>
+<td>воспроизводимость, CI-дружелюбность, скриптуемость</td>
+<td>без UI-подсветки</td>
+</tr>
+<tr>
+<td>Облачная модель</td>
+<td>качество</td>
+<td>секреты уходят наружу, цена, сеть</td>
+</tr>
+<tr>
+<td>Локальная модель</td>
+<td>приватность, офлайн</td>
+<td>слабее на сложных задачах</td>
+</tr>
+</tbody>
+</table>
+<p>Практика курса: CLI-агент + локальные инструменты — всё проверяемо скриптами.</p>
+<h3 id="конфиги-как-код">Конфиги как код</h3>
+<p><code>.vscode/settings.json</code>, <code>tasks.json</code>, <code>extensions.json</code> — артефакты:
+генерируются, валидируются, лежат в git. Задачи IDE дублируют команды курса
+(<code>pytest</code>, <code>ruff</code>, <code>validate</code>) — один источник истины для рук и автоматики.</p>
+<hr>
+<h2 id="часть-2-практика">Часть 2. Практика</h2>
+<h3 id="шаги">Шаги</h3>
+<pre class="hljs"><code><div><span class="hljs-built_in">cd</span> code\lab_3_2_ide
+
+<span class="hljs-comment"># 1. Диагноз окружения (в среде курса всё зелёное, exit 0)</span>
+python doctor.py
+<span class="hljs-comment">#   python 3.14.7, pytest, ruff 0.16.8, git 2.55, opencode v2.0.14, node (опционально)</span>
+
+<span class="hljs-comment"># 2. Конфиги как код — на копии, не в самом репозитории</span>
+python ide.py init <span class="hljs-literal">--dir</span> C:\tmp\demo_ws
+python ide.py check <span class="hljs-literal">--dir</span> C:\tmp\demo_ws     <span class="hljs-comment"># в порядке</span>
+
+<span class="hljs-comment"># 3. Тесты (ожидаемо: 7 passed)</span>
+python <span class="hljs-literal">-m</span> pytest <span class="hljs-literal">-q</span>
+</div></code></pre>
+<h3 id="самостоятельные-задания">Самостоятельные задания</h3>
+<ol>
+<li><strong>Сломанная задача.</strong> Удалите задачу <code>ruff</code> из <code>tasks.json</code>: покажите,
+что <code>check</code> находит именно её. Верните задачу.</li>
+<li><strong>Своя задача.</strong> Добавьте задачу <code>validate</code> под свой каталог и проверку
+её наличия в тест.</li>
+<li><strong>Отсутствующий бинарь.</strong> Симулируйте отсутствие <code>git</code> в PATH (временно
+переименуйте/уберите из PATH в тестовом shell): покажите exit 1 и hint.</li>
+</ol>
+<h3 id="механики-которые-отрабатываются">Механики, которые отрабатываются</h3>
+<table>
+<thead>
+<tr>
+<th>Механика</th>
+<th>Где в коде</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Проверка = факт + hint + required/optional</td>
+<td><code>doctor.py</code></td>
+</tr>
+<tr>
+<td>Генерация и валидация трёх конфигов</td>
+<td><code>ide.py</code></td>
+</tr>
+<tr>
+<td>Exit-коды для CI/документации</td>
+<td>оба CLI</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="контрольные-вопросы">Контрольные вопросы</h2>
+<ol>
+<li>Чем проверка doctor'а отличается от простого «запусти и посмотри»?</li>
+<li>Зачем градация required/optional? Что будет, если всё считать обязательным?</li>
+<li>Почему задачи IDE должны дублировать команды курса, а не жить своей жизнью?</li>
+<li>Что проверяет <code>ide.py check</code>, а что — нет? Где граница?</li>
+<li>Кому и зачем нужен <code>--json</code>-вывод doctor'а?</li>
+<li>Новый разработчик клонировал репозиторий. Опишите его первые 3 команды
+по материалам темы.</li>
+</ol>
+<h2 id="ответы-на-контрольные-вопросы-и-решения-задач">Ответы на контрольные вопросы и решения задач</h2>
+<p><strong>КВ1.</strong> Doctor фиксирует факт (версия/наличие), ставит диагноз (чего нет)
+и выписывает рецепт (hint + exit-код). «Запусти и посмотри» даёт только факт;
+рецепт и машиночитаемый итог превращают проверку в инструмент онбординга и CI.</p>
+<p><strong>КВ2.</strong> Не всё критично: без node жить можно, без git — нет. Всё
+обязательное = ложные красные (окружение рабочее, doctor красный) и
+игнорирование doctor'а со временем. Градация сохраняет доверие к проверке.</p>
+<p><strong>КВ3.</strong> Иначе расходятся «как проверяют руками» и «как проверяет CI/агент»:
+находка линтера в IDE, пропущенная в CI, или наоборот. Единые строки команд —
+единый стандарт качества независимо от исполнителя.</p>
+<p><strong>КВ4.</strong> Проверяет: наличие файлов, валидный JSON, ключевые секции
+(pytest-раннер, задачи pytest/ruff, recommendations). Не проверяет: смысл
+значений (верный ли путь), работу расширений, вкусовщину. Граница —
+структура vs семантика: первое — машине, второе — человеку при ревью.</p>
+<p><strong>КВ5.</strong> CI и скриптам онбординга: JSON парсится без regex'ов по Markdown;
+можно валить пайплайн, строить дашборд окружений команды, прикладывать к
+баг-репортам («не воспроизводится» → приложить <code>doctor --json</code>).</p>
+<p><strong>КВ6.</strong> <code>pip install -r requirements.txt</code> → <code>python doctor.py</code> (красное —
+поставить по hint'ам) → <code>python -m pytest -q</code> (зелёное — можно работать).
+Три команды отделяют «окружение» от «кода»: тесты красные при зелёном
+doctor'е — проблема в коде, а не в машине.</p>
+<p><strong>Задача 1 (решение).</strong> После удаления <code>ruff</code> из tasks: <code>check</code> печатает
+«нет задачи 'ruff'», exit 1. Находит именно её, потому что сверяется со
+списком обязательных меток, а не с «чем-то не так».</p>
+<p><strong>Задача 2 (решение).</strong> В <code>vscode_tasks()</code> добавить <code>task(&quot;validate&quot;, &quot;python lab_2_3_agents_md/validate.py&quot;)</code>; в тест — render + assert метки
+в JSON. Проверка <code>check</code> уже универсальна (сверяет pytest/ruff; расширьте
+список <code>want</code> при желании).</p>
+<p><strong>Задача 3 (решение).</strong> Без <code>git</code> в PATH: <code>check_binary</code> → ok=False,
+hint «установите git», exit 1. Демонстрирует fail-fast онбординга: лучше
+упасть на doctor'е за секунду, чем на <code>pr.py</code> через полчаса отладки.</p>
+<h2 id="литература">Литература</h2>
+<ul>
+<li>VS Code docs: tasks, settings, extensions.</li>
+<li>opencode V2 Docs: https://opencode.ai/v2/docs/</li>
+</ul>
+
+</body>
+</html>
