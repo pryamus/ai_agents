@@ -1,0 +1,42 @@
+﻿using System;
+using System.Linq;
+
+namespace Stateless.Reflection
+{
+    /// <summary>
+    /// Describes a transition that can be initiated from a trigger.
+    /// </summary>
+    public class FixedTransitionInfo : TransitionInfo
+    {
+        internal static FixedTransitionInfo Create<TState, TTrigger>(StateMachine<TState, TTrigger>.TriggerBehaviour behaviour, StateInfo destinationStateInfo)
+        {
+            return new FixedTransitionInfo
+            {
+                Trigger = new TriggerInfo(behaviour.Trigger),
+                DestinationState = destinationStateInfo,
+                GuardConditionsMethodDescriptions = behaviour.Guard == null
+                    ? Array.Empty<InvocationInfo>() : behaviour.Guard.Conditions.Select(c => c.MethodDescription),
+                IsInternalTransition = behaviour is StateMachine<TState, TTrigger>.InternalTriggerBehaviour
+            };
+        }
+
+        internal static FixedTransitionInfo Create<TState, TTrigger>(StateMachine<TState, TTrigger>.TriggerBehaviourAsync behaviour, StateInfo destinationStateInfo)
+        {
+            return new FixedTransitionInfo
+            {
+                Trigger = new TriggerInfo(behaviour.Trigger),
+                DestinationState = destinationStateInfo,
+                GuardConditionsMethodDescriptions = behaviour.Guard == null
+                    ? Array.Empty<InvocationInfo>() : behaviour.Guard.Conditions.Select(c => c.MethodDescription),
+                IsInternalTransition = behaviour is StateMachine<TState, TTrigger>.InternalTriggerBehaviour
+            };
+        }
+
+        private FixedTransitionInfo() { }
+
+        /// <summary>
+        /// The state that will be transitioned into on activation.
+        /// </summary>
+        public StateInfo DestinationState { get; private set; }
+    }
+}
